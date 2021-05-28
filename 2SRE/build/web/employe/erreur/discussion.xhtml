@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+
+    <ui:define name="title"></ui:define>
+
+    <ui:define name="page-header">
+        Résolution de l'érreur : <h:outputText value="#{eDiscussion.current_erreur.titre}"
+                                               style="color: grey; font-size: 20px;"/>
+    </ui:define>
+
+    <ui:define name="contenu">
+
+        <h:panelGroup id="Dcorps">
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h:panelGrid columns="2" style="display: inline-block;">
+                                titre: 
+                                <h:outputText value="#{eDiscussion.current_erreur.titre}"
+                                              style="font-size: 20px; font-weight: bold;"/>
+                                Date: 
+                                <h:outputText value="#{eDiscussion.current_erreur.datedeclarer}" >
+                                    <f:convertDateTime dateStyle="full" />
+                                </h:outputText>
+                                Niveau d'urgence: 
+                                <h:outputText value="#{eDiscussion.current_erreur.idgravite.libele}"
+                                              class="badge badge-#{eDiscussion.current_erreur.idgravite.background}"/>
+
+                            </h:panelGrid>
+                        </div>
+                        <div class="col-md-4">
+                            <div class=""
+                                 style=" display: inline-block; float: right;">
+                                <p:commandButton type="button"
+                                                 value="Marquer comme résolu"
+                                                 class="btn btn-success"
+                                                 icon="fa fa-check"
+                                                 rendered="#{!eDiscussion.current_erreur.resolu}">
+                                    <p:ajax listener="#{eDiscussion.make_resolved()}"
+                                            update=":Dcorps"/>
+                                </p:commandButton>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+
+                    <div class="row">
+
+                        <div class="col-md-8">
+
+                            <h:form style="height: 400px; width: 100%; max-height: 400px; overflow-y: auto;"
+                                    id="PanelCommentaire">
+
+                                <ui:repeat value="#{eDiscussion.list_commentaires}"
+                                           var="comment_el">
+                                    <p:panel>
+                                        <h:panelGroup>
+                                            <h:outputText value="#{comment_el.contenu} " />
+                                        </h:panelGroup>
+
+                                        <h:panelGroup style="background: rgba(0,0,0,0.1);">
+                                            <hr/>
+                                            par <h:outputText value="#{comment_el.idmembre.nom}" /> <br />
+                                            date:  
+                                            <h:outputText value=" #{comment_el.heurearr}">
+                                                <f:convertDateTime dateStyle="medium" />
+                                            </h:outputText>
+                                        </h:panelGroup>
+                                    </p:panel>
+                                </ui:repeat>
+
+                            </h:form>
+
+                            <h:panelGroup>
+                                <h:form rendered="#{!eDiscussion.current_erreur.resolu}">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <p:inputText value="#{eDiscussion.new_commentaire.contenu}" 
+                                                             class="form-control">
+                                                <p:ajax update="#{eManageErreur.saisi()}" />
+                                                </p:inputText>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <p:commandButton type="button"
+                                                                 value="Envoyer"
+                                                                 icon="fa fa-send"
+                                                                 class="btn btn-primary btn-block">
+                                                    <p:ajax listener="#{eDiscussion.send_commentaire()}"
+                                                            update=":PanelCommentaire" />
+                                                </p:commandButton>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </h:form>
+                            </h:panelGroup>
+
+                        </div>
+                        <div class="col-md-4">
+                            <p:panel class="panel panel-default"
+                                     style="height: 400px; max-height: 400px; overflow-y: auto;">
+                                <f:facet name="header" class="panel-heading">Les membres de la discussion</f:facet>
+                                
+                                <ui:repeat value="#{eDiscussion.list_membres}"
+                                           var="membre1">
+                                    <h:panelGroup>
+                                        <div class="form-group">
+                                            <h:outputText class="form-control"
+                                                          value="#{membre1.nom}" />
+                                        </div>
+                                    </h:panelGroup>
+                                </ui:repeat>
+                            </p:panel>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </h:panelGroup>
+
+
+    </ui:define>
+
+</ui:composition>
+
