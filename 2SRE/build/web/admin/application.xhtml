@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+
+    <ui:define name="title"></ui:define>
+
+    <ui:define name="page-header">
+        Application 
+        <span style="color: lightgrey;">
+            (<h:outputText value="#{eApplication.nbre_total_application}" >
+                <f:convertNumber maxFractionDigits="0" /> 
+            </h:outputText>)
+        </span>
+    </ui:define>
+
+    <ui:define name="contenu">
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <p:dataTable value="#{eApplication.list_gerer}"
+                                 var="application1"
+                                 class="table table-hover table-striped"
+                                 paginatorAlwaysVisible="false"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                 selection="#{eApplication.list_application}"
+                                 rows="100"
+                                 
+                                 sortOrder="descending"
+                                 lazy="false">
+
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column headerText="Nom" style="width: 35%"/>
+                                <p:column headerText="Description" style="width: 65%"/>
+                             
+                            </p:row>
+                           
+                        </p:columnGroup>
+
+                        <p:column >
+                            <h:outputText value="#{application1.application.nom}"/>
+
+                        </p:column>
+
+                        <p:column style="text-align:center;">
+                            <h:outputText value="#{application1.application.description}"/>
+
+                        </p:column>
+
+                        
+                       
+
+                        
+
+                    </p:dataTable>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+
+
+    </ui:define>
+    
+
+
+
+
+
+</ui:composition>
+
+

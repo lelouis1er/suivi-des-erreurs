@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+
+    <ui:define name="title"></ui:define>
+
+    <ui:define name="page-header">
+      Utilisateur 
+        <span style="color: lightgrey;">
+            (<h:outputText value="#{eUser.nbre_total_employe}" >
+                <f:convertNumber maxFractionDigits="0" /> 
+            </h:outputText>)
+        </span>
+    </ui:define>
+
+    <ui:define name="contenu">
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <p:dataTable value="#{eUser.list_employe}"
+                                 var="list1"
+                                 class="table table-hover table-striped"
+                                 paginatorAlwaysVisible="false"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                 
+                                 rows="100"
+                                 sortBy="#{list1.nom}"
+                                 sortOrder="descending"
+                                 lazy="false">
+
+                        <p:columnGroup type="header" >
+                            <p:row> 
+                                <p:column headerText="Nom" />
+                                <p:column headerText="Prenom" />
+                                <p:column headerText="Entreprise" />
+                                <p:column headerText="Poste" />
+                                <p:column headerText="Opperation" width="24%" />
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="5">
+                                    <f:facet name="header">
+                                        <h:outputText value=" " />
+                                    </f:facet>
+                                </p:column>
+                            </p:row>
+                        </p:columnGroup>
+
+                        <p:column >
+                            <h:outputText value="#{list1.nom}"/>
+
+                        </p:column>
+
+                        <p:column style="text-align: center;     ">
+                            <h:outputText value="#{list1.prenom}"/>
+
+                        </p:column>
+                        
+                        <p:column style="text-align: center;     ">
+                            <h:outputText value="#{list1.idens.raison}"/>
+
+                        </p:column>
+                        
+                        <p:column style="text-align: center;     ">
+                            <h:outputText value="#{list1.idposte.denomination}"/>
+
+                        </p:column>
+
+
+                       <p:column>
+                            <h:form >
+                               <p:commandButton type="button"
+                                 value="Supprimer"
+                                 style="background-color: #b92c28">
+                                   <p:ajax listener="#{eUser.employeFacadeLocal.remove(eErreur.current_employe)}"
+                                         oncomplete="javascript:location.reload();"/>
+                                </p:commandButton>
+                                
+                                <p:commandButton type="button"
+                                 value="Modifier"
+                                 style="background-color: #125acd">
+                                    <p:ajax listener="#{eUser.employeFacadeLocal.edit(eErreur.current_employe)}"
+                                         oncomplete="javascript:location.reload();"/>
+                                </p:commandButton>
+                            </h:form>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </div>
+            
+             <p:commandButton type="button"
+                                 value="Ajouter"
+                                 style="display: inline-block; background-color: #007bb6"
+                                 onclick="PF('ddu').show() " 
+                                  >
+                                   
+                                </p:commandButton>
+        </div>
+        
+        
+        
+        
+
+
+    </ui:define>
+    
+
+
+
+
+
+</ui:composition>
+
+
